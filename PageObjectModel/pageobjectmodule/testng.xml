@@ -1,0 +1,27 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Demo Suite">
+	<test name="Flights" preserve-order="true">
+		<parameter name="originCountry" value="Germany" />
+		<parameter name="originState" value="Munich (MUC)" />
+		<parameter name="destinationCountry" value="Greece" />
+		<parameter name="destinationState" value="Mykonos (JMK)" />
+		<parameter name="travelStartDate" value="28" />
+		<parameter name="travelReturnDate" value="29" />
+		<classes>
+			<class name="com.epam.pageobjectmodule.FindFlightsTest" >
+				<methods>
+					<include name="applicationPage"/>
+					<include name="selectOriginStateUsingCountry"/>
+					<include name="selectDestinationStateUsingCountry"/>
+					<include name="verifyTravelStartDate"/>
+					<include name="verifyTravelReturnDate"/>
+					<include name="verifySelectedOriginState"/>
+					<include name="verifySelectedDestinationState"/>
+					<include name="selectNumberOfAdultAndChildPassengers"/>
+					<include name="clickFindFlightsBtn"/>
+					<include name="summaryPage"/>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

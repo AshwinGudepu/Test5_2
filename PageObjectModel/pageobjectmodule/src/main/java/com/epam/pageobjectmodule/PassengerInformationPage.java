@@ -2,36 +2,22 @@ package com.epam.pageobjectmodule;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 
 public class PassengerInformationPage extends BasePage {
-	
+
 	public int adultPassengersCount;
-	
+
 	public PassengerInformationPage(WebDriver driver) {
-		super(driver);		
+		super(driver);
 	}
 
-	@Test
-	public void verifyPassengerInformationPageIsOpened() throws Exception {
-		String passengerDetailsPage = driver.findElement(By.xpath("//h2[@class='title main icon passenger']"))
-				.getText();
-		//assertEquals(passengerDetailsPage, "PASSENGERS");
-		int adultPassengersCount = driver
-				.findElements(By
-						.xpath("//div[@data-type='Adult']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
-				.size();
-		int childPassengersCount = driver
-				.findElements(By
-						.xpath("//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
-				.size();
+	public Boolean verifyPassengerInformationPageIsOpened() throws Exception {
+		driver.findElement(By.xpath("//h2[@class='title main icon passenger']")).getText();
+		return true;
 	}
-	
-	@Test
-	@Parameters({ "adultPassengerFirstName", "adultPassengerSecondName" })
-	public void enterAdultFirstNameAndLastName(String adultPassengerFirstName, String adultPassengerSecondName) {
-		int adultPassengersCount = driver
+
+	public boolean enterAdultFirstNameAndLastName(String adultPassengerFirstName, String adultPassengerSecondName) {
+		adultPassengersCount = driver
 				.findElements(By
 						.xpath("//div[@data-type='Adult']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
 				.size();
@@ -45,11 +31,10 @@ public class PassengerInformationPage extends BasePage {
 							+ adultPassengerCnt + "')]"))
 					.sendKeys(adultPassengerSecondName);
 		}
+		return true;
 	}
 
-	@Test(dependsOnMethods = { "enterAdultFirstNameAndLastName" })
-	@Parameters({ "childPassengerFirstName", "childPassengerSecondName" })
-	public void enterChildFirstNameAndLastName(String childPassengerFirstName, String childPassengerSecondName) {
+	public boolean enterChildFirstNameAndLastName(String childPassengerFirstName, String childPassengerSecondName) {
 		int childPassengersCount = driver
 				.findElements(By
 						.xpath("//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
@@ -58,13 +43,13 @@ public class PassengerInformationPage extends BasePage {
 				+ childPassengersCount; childPassengerCnt++) {
 			driver.findElement(By
 					.xpath("//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'FirstName')][contains(@id,'name_"
-							+ childPassengerCnt + "')]"))
+							+childPassengerCnt+"')]"))
 					.sendKeys(childPassengerFirstName);
 			driver.findElement(By
 					.xpath("//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'Surname')][contains(@id,'surname1_"
-							+ childPassengerCnt + "')]"))
+							+childPassengerCnt+"')]"))
 					.sendKeys(childPassengerSecondName);
 		}
+		return true;
 	}
-
 }

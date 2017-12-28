@@ -71,8 +71,7 @@ public class FindFlightsPage extends BasePage {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 		
-	public void selectStartDate(String travelStartDate) throws Exception {		
-		System.out.println("travelStartDate******************************************"+travelStartDate);		
+	public void selectStartDate(String travelStartDate) throws Exception {				
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='ui-datepicker-group ui-datepicker-group-first']//following::a[@class='ui-state-default'][contains(text(),'"+travelStartDate+"')]")));
 		driver.findElement(By.xpath("//div[@class='ui-datepicker-group ui-datepicker-group-first']//following::a[@class='ui-state-default'][contains(text(),'"+travelStartDate+"')]"))
@@ -80,26 +79,24 @@ public class FindFlightsPage extends BasePage {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			}
 	
-	public void selectReturnDate(String travelReturnDate) throws Exception {
-		System.out.println("travelStartDate******************************************"+travelReturnDate);
+	public void selectReturnDate(String travelReturnDate) throws Exception {		
 		driver.findElement(By
 				.xpath("//div[@class='ui-datepicker-group ui-datepicker-group-first']//following::a[@class='ui-state-default'][contains(text(),'"+travelReturnDate+"')]"))
 				.click();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
 	
-	public void getSelectedOriginStateText()throws Exception {		
+	public String getSelectedOriginStateText()throws Exception {		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String origin = (String) js.executeScript("return document.getElementsByName('origin')[0].value");			
-		System.out.println("origin----------------------------------------------------------" +origin);
+		String origin = (String) js.executeScript("return document.getElementsByName('origin')[0].value");		
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);		
-		
+		return origin;
 	}
 	
-	public void getSelectedDestinationStateText()	throws Exception {		
+	public String getSelectedDestinationStateText()	throws Exception {		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		String destination = (String) js.executeScript("return document.getElementsByName('destination')[0].value");
-		System.out.println("destination------------------------------------------------------"+destination);
+		return destination;
 	}
 
 	public void selectNumberOfAdultAndChildPassengers() throws Exception {

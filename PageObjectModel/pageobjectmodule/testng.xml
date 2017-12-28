@@ -7,6 +7,10 @@
 		<parameter name="destinationState" value="Mykonos (JMK)" />
 		<parameter name="travelStartDate" value="28" />
 		<parameter name="travelReturnDate" value="29" />
+		<parameter name="adultPassengerFirstName" value="JohnSmith" />
+		<parameter name="adultPassengerSecondName" value="TigerWoods" />
+		<parameter name="childPassengerFirstName" value="MitchellMarsh" />
+		<parameter name="childPassengerSecondName" value="JohnPlayer" />		
 		<classes>
 			<class name="com.epam.pageobjectmodule.FindFlightsTest" >
 				<methods>
@@ -19,7 +23,16 @@
 					<include name="verifySelectedDestinationState"/>
 					<include name="selectNumberOfAdultAndChildPassengers"/>
 					<include name="clickFindFlightsBtn"/>
-					<include name="summaryPage"/>
+					<include name="summaryPage"/>					
+					<include name="verifyNoOfFromPassengers"/>
+					<include name="verifyDepatureDate"/>
+					<include name="verifyDepatureCity"/>
+					<include name="verifyReturnDate"/>
+					<include name="verifyReturnCity"/>
+					<include name="clickNextStepButton"/>
+					<include name="verifyPassengerInformationPageIsOpened"/>
+					<include name="enterAdultFirstNameAndLastName"/>
+					<include name="enterChildFirstNameAndLastName"/>								
 				</methods>
 			</class>
 		</classes>

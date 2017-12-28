@@ -1,95 +1,148 @@
 package com.epam.pageobjectmodule;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FindFlightsTest {	
+public class FindFlightsTest {
 
 	public WebDriver driver;
 	private String START_URL = "http://www.volotea.com/en";
 	public FindFlightsPage findFlightsPage;
 	public SummaryPage summaryPage;
-	
-	@BeforeClass 
+	public PassengerInformationPage passengerInformationPage;
+
+	@BeforeClass
 	public void openBrowser() {
 		System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		driver = new ChromeDriver(capabilities);
 		driver.manage().window().maximize();
 		driver.get(START_URL);
-		findFlightsPage=new FindFlightsPage(driver);
+		findFlightsPage = new FindFlightsPage(driver);
 	}
 
 	@Test
-	public void applicationPage() throws Exception{			
-		String attributeValue=findFlightsPage.verifyLandingPage();		
+	public void applicationPage() throws Exception {
+		String attributeValue = findFlightsPage.verifyLandingPage();
 		if (attributeValue.contains("FIND FLIGHTS")) {
 			assertTrue(true);
-		}	
+		}
 	}
-		
-	public void clickFlightsTab() throws Exception{							
-		assertTrue(findFlightsPage.clickFlightsTab());			
+
+	public void clickFlightsTab() throws Exception {
+		assertTrue(findFlightsPage.clickFlightsTab());
 	}
-	
+
 	@Test
-	@Parameters({ "originCountry", "originState"})
-	public void selectOriginStateUsingCountry(String originCountry,String originState) throws Exception{						
-		findFlightsPage.selectOriginState(originCountry,originState);			
+	@Parameters({ "originCountry", "originState" })
+	public void selectOriginStateUsingCountry(String originCountry, String originState) throws Exception {
+		findFlightsPage.selectOriginState(originCountry, originState);
 	}
-	
+
 	@Test
-	@Parameters({ "destinationCountry", "destinationState"})
-	public void selectDestinationStateUsingCountry(String destinationCountry,String destinationState) throws Exception{						
-		findFlightsPage.selectDestinationState(destinationCountry,destinationState);			
+	@Parameters({ "destinationCountry", "destinationState" })
+	public void selectDestinationStateUsingCountry(String destinationCountry, String destinationState)
+			throws Exception {
+		findFlightsPage.selectDestinationState(destinationCountry, destinationState);
 	}
-	
+
 	@Test
-	@Parameters({ "travelStartDate"})
-	public void verifyTravelStartDate(String travelStartDate) throws Exception{							
-		findFlightsPage.selectStartDate(travelStartDate);			
-	}		
-	
+	@Parameters({ "travelStartDate" })
+	public void verifyTravelStartDate(String travelStartDate) throws Exception {
+		findFlightsPage.selectStartDate(travelStartDate);
+	}
+
 	@Test
-	@Parameters({"travelReturnDate"})
-	public void verifyTravelReturnDate(String travelReturnDate) throws Exception{							
-		findFlightsPage.selectReturnDate(travelReturnDate);			
-	}	
-	
-	public void verifySelectedOriginState() throws Exception{							
-		findFlightsPage.getSelectedOriginStateText();			
+	@Parameters({ "travelReturnDate" })
+	public void verifyTravelReturnDate(String travelReturnDate) throws Exception {
+		findFlightsPage.selectReturnDate(travelReturnDate);
 	}
-	
-	public void verifySelectedDestinationState() throws Exception{							
-		findFlightsPage.getSelectedOriginStateText();			
-	}	
-	
+
+	public void verifySelectedOriginState() throws Exception {
+		assertTrue(findFlightsPage.getSelectedOriginStateText().contains("Munich · MUC"));
+	}
+
+	public void verifySelectedDestinationState() throws Exception {
+		assertTrue(findFlightsPage.getSelectedOriginStateText().contains("Mykonos · JMK"));
+	}
+
 	@Test
-	public void selectNumberOfAdultAndChildPassengers() throws Exception{							
-		findFlightsPage.selectNumberOfAdultAndChildPassengers();			
+	public void selectNumberOfAdultAndChildPassengers() throws Exception {
+		findFlightsPage.selectNumberOfAdultAndChildPassengers();
 	}
-	
+
 	@Test
-	public void clickFindFlightsBtn() throws Exception{							
-		summaryPage=findFlightsPage.clickFindFlightsButton();			
+	public void clickFindFlightsBtn() throws Exception {
+		summaryPage = findFlightsPage.clickFindFlightsButton();
 	}
-	
-	@Test(dependsOnMethods="clickFindFlightsBtn")
-	public void summaryPage() throws Exception{							
-		summaryPage.verifySummaryPageIsOpened();			
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void summaryPage() throws Exception {
+		assertTrue(summaryPage.verifySummaryPageIsOpened());
 	}
-	
-	
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void verifyNoOfFromPassengers() throws Exception {
+		assertTrue(summaryPage.getNoOfFromPassengers().contains("4 passengers"));
+	}
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void verifyDepatureDate() throws Exception {
+		assertEquals(summaryPage.getDepatureDate(), "Mon 28 May 2018");
+	}
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void verifyDepatureCity() throws Exception {
+		assertEquals(summaryPage.getDepatureCity(), "Munich · Mykonos");
+	}
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void verifyReturnDate() throws Exception {
+		assertEquals(summaryPage.getReturnDate(), "Fri 29 Jun 2018");
+	}
+
+	@Test(dependsOnMethods = "clickFindFlightsBtn")
+	public void verifyReturnCity() throws Exception {
+		assertEquals(summaryPage.getReturnCity(), "Mykonos · Munich");
+	}
+
+	@Test
+	public void clickNextStepButton() throws Exception {
+		passengerInformationPage = summaryPage.clickNextStepButton();
+	}
+
+	@Test(dependsOnMethods = "clickNextStepButton")
+	public void verifyPassengerInformationPageIsOpened() throws Exception {
+		assertTrue(passengerInformationPage.verifyPassengerInformationPageIsOpened());
+	}
+
+	@Test(dependsOnMethods = "clickNextStepButton")
+	@Parameters({ "adultPassengerFirstName", "adultPassengerSecondName" })
+	public void enterAdultFirstNameAndLastName(String adultPassengerFirstName, String adultPassengerSecondName)
+			throws Exception {
+		assertTrue(passengerInformationPage.enterAdultFirstNameAndLastName(adultPassengerFirstName,
+				adultPassengerSecondName));
+	}
+
+	@Test(dependsOnMethods = "clickNextStepButton")
+	@Parameters({ "childPassengerFirstName", "childPassengerSecondName" })
+	public void enterChildFirstNameAndLastName(String childPassengerFirstName, String childPassengerSecondName)
+			throws Exception {
+		assertTrue(passengerInformationPage.enterChildFirstNameAndLastName(childPassengerFirstName,
+				childPassengerSecondName));
+	}
+
 	@AfterClass
 	public void afterClass() {
 		driver.close();
 		driver.quit();
 	}
 }
-

@@ -55,7 +55,7 @@ public class FindFlightsPage extends BasePage {
 	}
 	
 	public void selectOriginState(String originCountry, String originState) throws Exception {
-		driver.findElement(By.xpath("//fieldset[@class='origin']")).click();		
+		clickOriginInputBox.click();		
 		driver.findElement(By.xpath("//h2[@class='title'][contains(text(),'"+originCountry+"')]//following::a[contains(text(),'"+originState+"')]")).click();
 		Thread.sleep(3000);
 	}
@@ -75,7 +75,7 @@ public class FindFlightsPage extends BasePage {
 	}
 	
 	public void selectDestinationState(String destinationCountry,String destinationState) throws Exception {		
-		driver.findElement(By.xpath("//fieldset[@class='destination']/input")).click();
+		clickDestinationInputBox.click();
 		driver.findElement(By.xpath("//h2[@class='title'][contains(text(),'"+destinationCountry+"')]//following::a[contains(text(),'"+destinationState+"')]")).click();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}

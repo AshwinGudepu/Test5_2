@@ -1,7 +1,11 @@
 package com.epam.pageobjectmodule;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class PassengerInformationPage extends BasePage {
 
@@ -10,17 +14,20 @@ public class PassengerInformationPage extends BasePage {
 	public PassengerInformationPage(WebDriver driver) {
 		super(driver);
 	}
-
+	
+	@FindBy( xpath = "//h2[@class='title main icon passenger']")
+	private WebElement getPassengerInformationPageHeaderText;
+	
 	public Boolean verifyPassengerInformationPageIsOpened() throws Exception {
-		driver.findElement(By.xpath("//h2[@class='title main icon passenger']")).getText();
+		getPassengerInformationPageHeaderText.getText();
 		return true;
 	}
 
+	@FindBy( xpath = "//div[@data-type='Adult']//div[@class='form-column']//input[contains(@name,'FirstName')]")
+	private List<WebElement> getTotalNumbersOfAdults;
+	
 	public boolean enterAdultFirstNameAndLastName(String adultPassengerFirstName, String adultPassengerSecondName) {
-		adultPassengersCount = driver
-				.findElements(By
-						.xpath("//div[@data-type='Adult']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
-				.size();
+		adultPassengersCount = getTotalNumbersOfAdults.size();
 		for (int adultPassengerCnt = 0; adultPassengerCnt < adultPassengersCount; adultPassengerCnt++) {
 			driver.findElement(By
 					.xpath("//div[@data-type='Adult']//div[@class='form-column']//input[contains(@name,'FirstName')][contains(@id,'name_"
@@ -34,11 +41,10 @@ public class PassengerInformationPage extends BasePage {
 		return true;
 	}
 
+	@FindBy( xpath = "//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'FirstName')]")
+	private List<WebElement> getTotalNumbersOfChildren;
 	public boolean enterChildFirstNameAndLastName(String childPassengerFirstName, String childPassengerSecondName) {
-		int childPassengersCount = driver
-				.findElements(By
-						.xpath("//div[@data-type='Child']//div[@class='form-column']//input[contains(@name,'FirstName')]"))
-				.size();
+		int childPassengersCount =getTotalNumbersOfChildren.size();
 		for (int childPassengerCnt = adultPassengersCount; childPassengerCnt < adultPassengersCount
 				+ childPassengersCount; childPassengerCnt++) {
 			driver.findElement(By

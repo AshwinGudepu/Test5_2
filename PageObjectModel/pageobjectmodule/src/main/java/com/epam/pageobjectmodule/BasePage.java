@@ -16,7 +16,8 @@ public abstract class BasePage {
 	public int timeInSeconds = 30;	
 
 	public BasePage(WebDriver driver) {
-		this.driver = driver;		
+		this.driver = driver;	
+		PageFactory.initElements(driver, this);
 	}
 	
 	public boolean isElementPresent(By by) {
@@ -52,15 +53,5 @@ public abstract class BasePage {
 			return true;
 		}
 		return false;
-	}
-
-	public void deleteAllFiles() {
-		File directory = new File(".\\ScreenCapture");
-		File[] files = directory.listFiles();
-		for (File file : files) {
-			if (!file.delete()) {
-				System.out.println("Failed to delete " + file);
-			}
-		}
 	}
 }

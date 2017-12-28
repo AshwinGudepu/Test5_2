@@ -1,60 +1,56 @@
 package com.epam.pageobjectmodule;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 
 public class FindFlightsPage extends BasePage {
-
+	
 	public int adultPassengersCount = 0;
 	public int childPassengersCount = 0;
+	
+	@FindBy(xpath = "//a[@class='button brand md block']")
+    private WebElement getTitleOfHomePage;
 
+	@FindBy(xpath = "//ul[@id='navBar']//h2[@itemprop='name'][contains(text(),'FLIGHTS')]")
+	private By clickFlightsButton;
+	
+	@FindBy(xpath = "//fieldset[@class='origin']")
+	private WebElement clickOriginInputBox;		
+		
+	@FindBy(xpath = "//fieldset[@class='destination']/input")
+	private WebElement clickDestinationInputBox;
+				
 	public FindFlightsPage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 	}
-
+	
 	public String verifyLandingPage() throws Exception {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		String textName = driver.findElement(By.xpath("//a[@class='button brand md block']")).getText();			
+		String textName = getTitleOfHomePage.getText();			
 		return textName;
 	}
 	
 	public boolean clickFlightsTab(){		
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@id='navBar']//h2[@itemprop='name'][contains(text(),'FLIGHTS')]")));    
-		driver.findElement(By.xpath("//ul[@id='navBar']//h2[@itemprop='name'][contains(text(),'FLIGHTS')]")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(clickFlightsButton));    
+		((WebElement) clickFlightsButton).click();
 		return true;
 	}
 	
@@ -63,7 +59,20 @@ public class FindFlightsPage extends BasePage {
 		driver.findElement(By.xpath("//h2[@class='title'][contains(text(),'"+originCountry+"')]//following::a[contains(text(),'"+originState+"')]")).click();
 		Thread.sleep(3000);
 	}
+	
+	public WebElement waitForElement(final String locator) {
+		WebElement element = null;
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(5, TimeUnit.SECONDS).ignoring(NoSuchElementException.class);
 
+		element = wait.until(new Function<WebDriver, WebElement>() {
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(By.xpath(locator));
+
+			}
+		});
+		return element;
+	}
 	
 	public void selectDestinationState(String destinationCountry,String destinationState) throws Exception {		
 		driver.findElement(By.xpath("//fieldset[@class='destination']/input")).click();
@@ -99,20 +108,34 @@ public class FindFlightsPage extends BasePage {
 		return destination;
 	}
 
+	@FindBy(xpath = "//select[@name='adults']/optgroup/option")
+	private WebElement adultDropDown;
+
+	@FindBy(xpath = "//select[@name='adults']")
+	private WebElement selectingAdultNumber;
+	
+	@FindBy(xpath = "//select[@name='children']/optgroup/option")
+	private WebElement childDropDown;
+
+	@FindBy(xpath = "//select[@name='children']")
+	private WebElement selectingChildNumber;
+
 	public void selectNumberOfAdultAndChildPassengers() throws Exception {
-		driver.findElement(By.xpath("//select[@name='adults']/optgroup/option")).click();
-		Select selectAdults = new Select(driver.findElement(By.xpath("//select[@name='adults']")));
+		adultDropDown.click();
+		Select selectAdults = new Select(selectingAdultNumber);
 		selectAdults.selectByValue("number:2");	
-		driver.findElement(By.xpath("//select[@name='children']/optgroup/option")).click();
-		Select selectChild = new Select(driver.findElement(By.xpath("//select[@name='children']")));
+		childDropDown.click();
+		Select selectChild = new Select(selectingChildNumber);
 		selectChild.selectByValue("number:2");
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
 
+	@FindBy(xpath = "//form[@name='vm.searchSubmit']/a[@role='button'][contains(text(),'FIND FLIGHTS')]")
+	private WebElement clickFindFLightsButton;
+	
 	public SummaryPage clickFindFlightsButton() throws Exception {
 		Actions action = new Actions(driver);
-		WebElement element = driver.findElement(
-				By.xpath("//form[@name='vm.searchSubmit']/a[@role='button'][contains(text(),'FIND FLIGHTS')]"));
+		WebElement element = clickFindFLightsButton;
 		action.moveToElement(element).click(element).build().perform();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		return new SummaryPage(driver);

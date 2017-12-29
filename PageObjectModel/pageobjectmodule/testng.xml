@@ -15,13 +15,11 @@
 			<class name="com.epam.pageobjectmodule.FindFlightsTest" >
 				<methods>
 					<include name="applicationPage"/>
-					<include name="selectOriginStateUsingCountry"/>
-					<include name="selectDestinationStateUsingCountry"/>
-					<include name="verifyTravelStartDate"/>
-					<include name="verifyTravelReturnDate"/>
-					<include name="verifySelectedOriginState"/>
-					<include name="verifySelectedDestinationState"/>
+					<include name="selectOriginDestinationStateAndCountry"/>
 					<include name="selectNumberOfAdultAndChildPassengers"/>
+					<include name="selectTravelStartAndReturnDate"/>
+					<include name="verifySelectedOriginState"/>
+					<include name="verifySelectedDestinationState"/>					
 					<include name="clickFindFlightsBtn"/>
 					<include name="summaryPage"/>					
 					<include name="verifyNoOfFromPassengers"/>
@@ -30,6 +28,7 @@
 					<include name="verifyReturnDate"/>
 					<include name="verifyReturnCity"/>
 					<include name="clickNextStepButton"/>
+					
 					<include name="verifyPassengerInformationPageIsOpened"/>
 					<include name="enterAdultFirstNameAndLastName"/>
 					<include name="enterChildFirstNameAndLastName"/>								

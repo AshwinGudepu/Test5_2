@@ -37,41 +37,18 @@ public class FindFlightsTest {
 		}
 	}
 
-	public void clickFlightsTab() throws Exception {
-		assertTrue(findFlightsPage.clickFlightsTab());
+	@Test
+	@Parameters({"originCountry","originState","destinationCountry","destinationState"})
+	public void selectOriginDestinationStateAndCountry(String originCountry, String originState, String destinationCountry,
+			String destinationState) throws Exception {
+		findFlightsPage.selectOriginAndDestinationState(originCountry,originState,destinationCountry,
+				destinationState);
 	}
 
 	@Test
-	@Parameters({ "originCountry", "originState" })
-	public void selectOriginStateUsingCountry(String originCountry, String originState) throws Exception {
-		findFlightsPage.selectOriginState(originCountry, originState);
-	}
-
-	@Test
-	@Parameters({ "destinationCountry", "destinationState" })
-	public void selectDestinationStateUsingCountry(String destinationCountry, String destinationState)
-			throws Exception {
-		findFlightsPage.selectDestinationState(destinationCountry, destinationState);
-	}
-
-	@Test
-	@Parameters({ "travelStartDate" })
-	public void verifyTravelStartDate(String travelStartDate) throws Exception {
-		findFlightsPage.selectStartDate(travelStartDate);
-	}
-
-	@Test
-	@Parameters({ "travelReturnDate" })
-	public void verifyTravelReturnDate(String travelReturnDate) throws Exception {
-		findFlightsPage.selectReturnDate(travelReturnDate);
-	}
-
-	public void verifySelectedOriginState() throws Exception {
-		assertTrue(findFlightsPage.getSelectedOriginStateText().contains("Munich · MUC"));
-	}
-
-	public void verifySelectedDestinationState() throws Exception {
-		assertTrue(findFlightsPage.getSelectedOriginStateText().contains("Mykonos · JMK"));
+	@Parameters({"travelStartDate","travelReturnDate"})
+	public void selectTravelStartAndReturnDate(String travelStartDate,String travelReturnDate) throws Exception {
+		findFlightsPage.selectStartDateAndReturnDate(travelStartDate,travelReturnDate);		
 	}
 
 	@Test
@@ -79,6 +56,17 @@ public class FindFlightsTest {
 		findFlightsPage.selectNumberOfAdultAndChildPassengers();
 	}
 
+	@Test
+	public void verifySelectedOriginState() throws Exception {
+		assertTrue(findFlightsPage.getSelectedOriginStateText().contains("Munich · MUC"));
+	}
+
+	@Test
+	public void verifySelectedDestinationState() throws Exception {
+		assertTrue(findFlightsPage.getSelectedDestinationStateText().contains("Mykonos · JMK"));
+	}
+
+	
 	@Test
 	public void clickFindFlightsBtn() throws Exception {
 		summaryPage = findFlightsPage.clickFindFlightsButton();

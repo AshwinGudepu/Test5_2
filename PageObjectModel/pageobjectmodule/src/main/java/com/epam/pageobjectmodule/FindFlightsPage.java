@@ -81,7 +81,7 @@ public class FindFlightsPage extends BasePage {
 			String destinationState) throws Exception {
 		clickOriginInputBox.click();
 		selectOriginCountryAndState.click();
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		clickDestinationInputBox.click();
 		selectDestinationCountryAndState.click();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

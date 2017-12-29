@@ -65,7 +65,6 @@ public class FindFlightsTest {
 	public void verifySelectedDestinationState() throws Exception {
 		assertTrue(findFlightsPage.getSelectedDestinationStateText().contains("Mykonos · JMK"));
 	}
-
 	
 	@Test
 	public void clickFindFlightsBtn() throws Exception {

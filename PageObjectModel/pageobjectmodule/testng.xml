@@ -27,8 +27,7 @@
 					<include name="verifyDepatureCity"/>
 					<include name="verifyReturnDate"/>
 					<include name="verifyReturnCity"/>
-					<include name="clickNextStepButton"/>
-					
+					<include name="clickNextStepButton"/>					
 					<include name="verifyPassengerInformationPageIsOpened"/>
 					<include name="enterAdultFirstNameAndLastName"/>
 					<include name="enterChildFirstNameAndLastName"/>								
